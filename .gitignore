@@ -1,0 +1,4 @@
+/docker/nginx/ssl/cert.pem
+/docker/nginx/ssl/key.pem
+.idea
+.DS_Store

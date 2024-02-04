@@ -8,8 +8,8 @@ services:
 #        APP_CODE_PATH: ${APP_CODE_PATH}
     volumes:
       - ${APP_CODE_PATH}:/app
-    ports:
-      - "80:8000"
+#    ports:
+#      - "80:8000"
 
   nginx:
     build:
@@ -17,28 +17,28 @@ services:
       args:
         NGINX_VERSION: ${NGINX_VERSION}
     ports:
-#      - "80:80"
+      - "80:80"
       - "443:443"
     depends_on:
       - python
-#
-  mariadb:
-    build:
-      context: ./mariadb
-      args:
-        - http_proxy
-        - https_proxy
-        - no_proxy
-        - MARIADB_VERSION=${MARIADB_VERSION}
-    volumes:
-      - ./mariadb/data:/var/lib/mysql
-      #      - /var/lib/docker/volumes/mariadb_data/_data:/var/lib/mysql
-      - ./mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-    ports:
-      - "3306:3306"
-    environment:
-      - TZ=${MARIADB_TIMEZONE}
-      - MYSQL_DATABASE=${MARIADB_DATABASE}
-      - MYSQL_USER=${MARIADB_USER}
-      - MYSQL_PASSWORD=${MARIADB_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+##
+#  mariadb:
+#    build:
+#      context: ./mariadb
+#      args:
+#        - http_proxy
+#        - https_proxy
+#        - no_proxy
+#        - MARIADB_VERSION=${MARIADB_VERSION}
+#    volumes:
+#      - ./mariadb/data:/var/lib/mysql
+#      #      - /var/lib/docker/volumes/mariadb_data/_data:/var/lib/mysql
+#      - ./mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+#    ports:
+#      - "3306:3306"
+#    environment:
+#      - TZ=${MARIADB_TIMEZONE}
+#      - MYSQL_DATABASE=${MARIADB_DATABASE}
+#      - MYSQL_USER=${MARIADB_USER}
+#      - MYSQL_PASSWORD=${MARIADB_PASSWORD}
+#      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
