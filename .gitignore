@@ -2,3 +2,4 @@
 /docker/nginx/ssl/key.pem
 .idea
 .DS_Store
+.env
