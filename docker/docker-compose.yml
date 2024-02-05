@@ -4,12 +4,11 @@ services:
   python:
     build:
       context: ./python
-#      args:
-#        APP_CODE_PATH: ${APP_CODE_PATH}
     volumes:
       - ${APP_CODE_PATH}:/app
-#    ports:
-#      - "80:8000"
+    environment:
+      - TZ=${PYTHON_TIMEZONE}
+      - REMOTE_DEBUG=${PYTHON_REMOTE_DEBUG}
 
   nginx:
     build:

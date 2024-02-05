@@ -1,3 +1,4 @@
+import os
 import time
 from datetime import datetime
 from typing import Optional
@@ -8,8 +9,14 @@ from fastapi.openapi.utils import get_openapi
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-app = FastAPI(title="FastAPI Example")
+from app.core.conf import settings
 
+# Activate this when doing remote debugging.
+# import pydevd_pycharm
+# pydevd_pycharm.settrace('host.docker.internal', port=12345, stdoutToServer=True, stderrToServer=True)
+
+
+app = FastAPI(title="FastAPI Example")
 
 class Item(BaseModel):
     name: str
@@ -20,6 +27,13 @@ class Item(BaseModel):
 
 @app.get("/")
 def read_root():
+    envs = os.environ
+
+    APPS_ENV = settings.APPS_ENV
+    DEBUG = settings.DEBUG
+    APP_NAME = settings.APP_NAME
+    APP_BASE_DOMAIN = settings.APP_BASE_DOMAIN
+
     return {
         "Hello": "World",
     }
@@ -47,7 +61,6 @@ async def stream(token: Optional[str] = Header(None)):
 
             if count > 10:
                 return
-
 
     generator = event_stream()
     return StreamingResponse(generator, media_type="text/event-stream")
@@ -82,4 +95,12 @@ openapi_schema = get_openapi(
 app.openapi_schema = openapi_schema
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    # uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(
+        app="main:app",
+        host="0.0.0.0",
+        port=443,
+        reload=True,
+        ssl_keyfile="/Users/cwlee02/Project/2024/fastapi-sse/docker/nginx/ssl/key.pem",
+        ssl_certfile="/Users/cwlee02/Project/2024/fastapi-sse/docker/nginx/ssl/cert.pem",
+    )

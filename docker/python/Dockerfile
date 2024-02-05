@@ -10,6 +10,7 @@ RUN adduser --disabled-password --gecos '' pyuser
 COPY requirements.txt /app/
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
+#RUN pip install "pydevd-pycharm==233.13763.11"
 
 
 USER pyuser
